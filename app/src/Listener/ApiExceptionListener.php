@@ -12,11 +12,19 @@ class ApiExceptionListener
 {
     const MIME_JSON = 'application/json';
 
+
+    //public function __construct(private readonly bool $isDebug)
+    //{
+    //}
+
     public function onKernelException(ExceptionEvent $event): void
     {
         $acceptHeader = $event->getRequest()->headers->get('Accept');
 
         $exception = $event->getThrowable();
+
+
+        //dd($this->isDebug);
 
         if ($acceptHeader === self::MIME_JSON) {
             $response = new JsonResponse();
