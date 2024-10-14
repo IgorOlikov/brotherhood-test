@@ -13,9 +13,11 @@ class ApiExceptionListener
     const MIME_JSON = 'application/json';
 
 
-    //public function __construct(private readonly bool $isDebug)
-    //{
-    //}
+    public function __construct(
+        private readonly bool $isDebug
+    )
+    {
+    }
 
     public function onKernelException(ExceptionEvent $event): void
     {
@@ -24,14 +26,12 @@ class ApiExceptionListener
         $exception = $event->getThrowable();
 
 
-        //dd($this->isDebug);
-
         if ($acceptHeader === self::MIME_JSON) {
             $response = new JsonResponse();
 
             $response->headers->set('Content-Type', self::MIME_JSON);
 
-            match ((bool)$_ENV['APP_DEBUG']) {
+            match ($this->isDebug) {
                 true => $response->setContent($this->devExceptionToJson($exception)),
                 false => $response->setContent($this->prodExceptionToJson($exception)),
                 default => false
