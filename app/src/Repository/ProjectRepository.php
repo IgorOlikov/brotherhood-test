@@ -11,33 +11,36 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProjectRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Project::class);
     }
 
-    //    /**
-    //     * @return Project[] Returns an array of Project objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function existsByName(string $name): bool
+    {
+        $project = $this->findBy(['name' => $name]);
 
-    //    public function findOneBySomeField($value): ?Project
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (empty($project)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function existsById(int $id): bool
+    {
+        $project = $this->findBy(['id' => $id]);
+
+        if (empty($project)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function getById(int $id): Project|null
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+
 }
