@@ -17,7 +17,7 @@ services:
       volumes:
         - ./app:/app
       environment:
-        APP_DEBUG: 1
+        APP_DEBUG: 0
         POSTGRES_HOST: ${POSTGRES_HOST}
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_DB: ${POSTGRES_DB}

@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 class ManageEmployeeController extends AbstractController
 {
@@ -60,8 +61,12 @@ class ManageEmployeeController extends AbstractController
             200);
     }
 
-    #[Route('/manage/employee/{employeeId}/add-project/{projectId}', methods: ['POST'])]
-    public function addProject(int $employeeId, int $projectId): Response
+    #[Route(
+        '/manage/employee/{employeeId}/add-project/{projectId}',
+        requirements: ['employeeId' => Requirement::DIGITS, 'projectId' => Requirement::DIGITS],
+        methods: ['POST']
+    )]
+    public function addProject(int $employeeId,int  $projectId): Response
     {
         $this->employeeService->addProjectToEmployee($employeeId, $projectId);
 

@@ -26,24 +26,27 @@ class ApiExceptionListener
         $exception = $event->getThrowable();
 
 
+        $response = new JsonResponse();
+
         if ($acceptHeader === self::MIME_JSON) {
-            $response = new JsonResponse();
 
             $response->headers->set('Content-Type', self::MIME_JSON);
-
-            match ($this->isDebug) {
-                true => $response->setContent($this->devExceptionToJson($exception)),
-                false => $response->setContent($this->prodExceptionToJson($exception)),
-                default => false
-            };
-
-            if ($exception instanceof HttpExceptionInterface) {
-                $response->setStatusCode($exception->getStatusCode());
-            } else {
-                $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-            $event->setResponse($response);
         }
+
+        match ($this->isDebug) {
+            true => $response->setContent($this->devExceptionToJson($exception)),
+            false => $response->setContent($this->prodExceptionToJson($exception)),
+            default => false
+        };
+
+        if ($exception instanceof HttpExceptionInterface) {
+            $response->setStatusCode($exception->getStatusCode());
+        } else {
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $event->setResponse($response);
+
     }
 
     public function devExceptionToJson(\Throwable $exception): string

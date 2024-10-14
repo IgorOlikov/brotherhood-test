@@ -25,5 +25,5 @@ COPY ./dev/php-fpm/conf.d /usr/local/etc/php/conf.d
 
 WORKDIR /app
 
-RUN chmod -R 777 var
+
 
