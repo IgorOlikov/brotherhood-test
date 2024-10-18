@@ -23,12 +23,8 @@ RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 #-------- [CONFIGS] ----------------
 
 # [PHP-.ini]
-# xdebug.ini
+# xdebug.ini .etc
 COPY ./dev/php/conf.d /usr/local/etc/php/conf.d
-
-# timeouts.ini
-COPY ./dev/php-fpm/conf.d /usr/local/etc/php/conf.d
-
 
 # [PHP-FPM]
 # check config command = php-fpm -tt
