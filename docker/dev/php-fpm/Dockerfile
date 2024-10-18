@@ -19,6 +19,8 @@ RUN apk add --update linux-headers --no-cache autoconf g++ make \
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
+USER root
+
 
 #-------- [CONFIGS] ----------------
 
@@ -36,11 +38,12 @@ COPY ./dev/php-fpm/php-fpm-conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 # [docker.conf,www.conf,www.conf.default,zz-docker.conf]
 COPY ./dev/php-fpm/fpm-pools/php-fpm.d /usr/local/etc/php-fpm.d
 
+RUN rm /usr/local/etc/php-fpm.d/docker.conf
+RUN rm /usr/local/etc/php-fpm.d/zz-docker.conf
 #------------------------------------
 
 RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 
-USER app
-
 WORKDIR /app
 
+RUN chown -R app:app /app

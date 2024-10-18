@@ -11,6 +11,7 @@ class IndexController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): JsonResponse
     {
-        phpinfo();
+        dd($_ENV);
+        //phpinfo();
     }
 }
