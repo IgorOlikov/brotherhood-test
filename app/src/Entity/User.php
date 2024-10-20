@@ -33,6 +33,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $roles = [];
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: ["default" => null])]
+    private ?DateTimeImmutable $emailVerifiedAt = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
 
@@ -49,6 +52,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSlug(SluggerInterface $slugger): void
     {
         $this->slug = $slugger->slug($this->getName());
+    }
+
+    public function getEmailVerifiedAt(): ?DateTimeImmutable
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    public function setEmailVerifiedAt(?DateTimeImmutable $emailVerifiedAt): void
+    {
+        if (!$this->getEmailVerifiedAt()) {
+            $this->emailVerifiedAt = $emailVerifiedAt;
+        }
     }
 
     public function getCreatedAt(): DateTimeImmutable

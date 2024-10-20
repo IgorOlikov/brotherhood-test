@@ -46,7 +46,7 @@ class Employee
     private DateTimeImmutable $dateOfEmployment;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: ["default" => null])]
-    private DateTimeImmutable $dateOfDismissal;
+    private ?DateTimeImmutable $dateOfDismissal = null;
 
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'employees')]
     #[ORM\JoinTable(name: 'employees_projects')]
