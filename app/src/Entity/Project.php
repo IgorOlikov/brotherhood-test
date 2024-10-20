@@ -34,7 +34,10 @@ class Project
     private string $slug;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeImmutable $createdAt;
+    private DateTimeImmutable $openedAt;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    private ?DateTimeImmutable $closedAt = null;
 
     #[ORM\ManyToMany(targetEntity: Employee::class, mappedBy: 'projects')]
     private Collection $employees;
@@ -43,13 +46,23 @@ class Project
     public function __construct()
     {
         $this->employees = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
+        $this->openedAt = new DateTimeImmutable();
     }
 
     #[ORM\PrePersist]
     public function setSlug(SluggerInterface $slugger): void
     {
         $this->slug = $slugger->slug($this->getName());
+    }
+
+    public function getClosedAt(): ?DateTimeImmutable
+    {
+        return $this->closedAt;
+    }
+
+    public function setClosedAt(?DateTimeImmutable $closedAt): void
+    {
+        $this->closedAt = $closedAt;
     }
 
     public function getSlug(): string
@@ -64,7 +77,7 @@ class Project
 
     public function getCreatedAt(): DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->openedAt;
     }
 
     public function getName(): string
