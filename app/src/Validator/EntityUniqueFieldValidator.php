@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class EntityExistsValidator extends ConstraintValidator
+class EntityUniqueFieldValidator extends ConstraintValidator
 {
     private EntityManagerInterface $entityManager;
 
@@ -19,8 +19,8 @@ class EntityExistsValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof EntityExists) {
-            throw new UnexpectedTypeException($constraint, EntityExists::class);
+        if (!$constraint instanceof EntityUniqueField) {
+            throw new UnexpectedTypeException($constraint, EntityUniqueField::class);
         }
 
         if (null === $value || '' === $value) {
@@ -32,10 +32,11 @@ class EntityExistsValidator extends ConstraintValidator
         }
 
         $repository = $this->entityManager->getRepository($constraint->entityClass);
-        $entity = $repository->findOneBy([$constraint->field => $value]);
+        $existingEntity = $repository->findOneBy([$constraint->field => $value]);
 
-        if (null === $entity) {
+        if ($existingEntity) {
             $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ field }}', $constraint->field)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();
         }

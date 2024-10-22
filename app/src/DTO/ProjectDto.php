@@ -4,6 +4,7 @@ namespace App\DTO;
 
 
 use App\Validator\EntityExists;
+use App\Validator\EntityUniqueField;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,12 @@ final class ProjectDto
     #[Assert\Type(type: Types::STRING, groups: ['create'])]
     #[Assert\NotBlank(groups: ['create'])]
     #[Assert\Length(min: 5, max: 15, groups: ['create'])]
+    #[EntityUniqueField(
+        entityClass: 'App\Entity\Project',
+        field: 'name',
+        message: 'Project with {{ field }} {{ value }} already exists.',
+        groups: ['update', 'patch', 'create']
+    )]
     public ?string $name = null;
 
     #[Assert\Type(type: Types::STRING, groups: ['create'])]
