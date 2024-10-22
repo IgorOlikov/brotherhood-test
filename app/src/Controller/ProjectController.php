@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DTO\ProjectDto;
 use App\Repository\ProjectRepository;
+use App\Service\ProjectService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/v1')]
 class ProjectController extends AbstractController
 {
+    public function __construct(
+        private readonly ProjectService $projectService
+    )
+    {
+    }
+
     #[Route('/project', name: 'app_project', methods: ['GET'])]
     public function index(ProjectRepository $projectRepository): JsonResponse
     {
@@ -29,9 +36,9 @@ class ProjectController extends AbstractController
         )] ProjectDto $projectDto
     ): Response
     {
-        dd($projectDto);
+        $project = $this->projectService->createProjectFromDto($projectDto);
 
-        return $this->json($projectDto);
+        return $this->json(['project' => $project->getId()], 201);
     }
 
 

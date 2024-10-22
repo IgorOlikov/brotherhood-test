@@ -10,9 +10,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ProjectRepository::class), ORM\HasLifecycleCallbacks]
+
+#[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[UniqueEntity(fields: ['name', 'slug'], message: 'Project with this name already exists')]
 class Project
 {
@@ -36,7 +36,7 @@ class Project
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $openedAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $closedAt = null;
 
     #[ORM\ManyToMany(targetEntity: Employee::class, mappedBy: 'projects')]
@@ -49,10 +49,11 @@ class Project
         $this->openedAt = new DateTimeImmutable();
     }
 
-    #[ORM\PrePersist]
-    public function setSlug(SluggerInterface $slugger): void
+
+
+    public function computeSlug(SluggerInterface $slugger): void
     {
-        $this->slug = $slugger->slug($this->getName());
+        $this->slug = $slugger->slug($this->name)->lower();
     }
 
     public function getClosedAt(): ?DateTimeImmutable
