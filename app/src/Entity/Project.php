@@ -30,7 +30,7 @@ class Project
     #[ORM\Column(type: Types::STRING, length: 20, options: ['default' => 'opened'])]
     private string $status = 'opened';
 
-    #[ORM\Column(type: Types::STRING, length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private string $slug;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]

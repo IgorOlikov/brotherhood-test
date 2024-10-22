@@ -6,8 +6,12 @@ services:
         dockerfile: dev/nginx/Dockerfile
       volumes:
         - ./app:/app
+        - ./docker/dev/nginx/logs:/var/log/nginx
       ports:
         - "80:80"
+      depends_on:
+        - fpm
+
 
     fpm:
       build:
@@ -21,8 +25,7 @@ services:
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_DB: ${POSTGRES_DB}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      depends_on:
-        - nginx
+
 
     cli:
       build:
