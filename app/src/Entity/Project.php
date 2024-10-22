@@ -27,8 +27,8 @@ class Project
     #[ORM\Column(type: Types::STRING)]
     private string $client;
 
-    #[ORM\Column(type: Types::STRING, length: 20)]
-    private string $status;
+    #[ORM\Column(type: Types::STRING, length: 20, options: ['default' => 'opened'])]
+    private string $status = 'opened';
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $slug;
@@ -119,6 +119,8 @@ class Project
     {
         $this->employees->add($employee);
     }
+
+
 
 
 }

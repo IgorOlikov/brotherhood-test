@@ -13,7 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class), ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['email', 'phoneNumber', 'fullName', 'slug'], message: 'Employee with this email or phone number already exists')]
+#[UniqueEntity(fields: ['email', 'phoneNumber', 'fullName', 'slug'], message: 'Employee with this name, email or phone number already exists')]
 class Employee
 {
     #[ORM\Id]

@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Employee;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class IndexController extends AbstractController
+class AdminController extends AbstractController
 {
-    #[Route('/', name: 'app_index')]
+    #[Route('/admin', name: 'app_admin')]
     public function index(): JsonResponse
     {
-        $employee = new Employee();
-
-        dd($employee);
+        return $this->json([
+            'message' => 'Welcome to your new controller!',
+            'path' => 'src/Controller/AdminController.php',
+        ]);
     }
 }
