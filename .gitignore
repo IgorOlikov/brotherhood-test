@@ -2,3 +2,4 @@
 .idea
 .git
 /docker/postgresql
+/docker/dev/nginx/logs/*
