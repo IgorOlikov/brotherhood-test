@@ -13,7 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-#[UniqueEntity(fields: ['name', 'slug'], message: 'Project with this name already exists')]
+#[UniqueEntity(fields: ['name'], message: 'Project with this name already exists')]
 class Project
 {
     #[ORM\Id]

@@ -12,8 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
-#[ORM\Entity(repositoryClass: EmployeeRepository::class), ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['email', 'phoneNumber', 'fullName', 'slug'], message: 'Employee with this name, email or phone number already exists')]
+#[ORM\Entity(repositoryClass: EmployeeRepository::class)]
+#[UniqueEntity(fields: ['email', 'fullName'], message: 'Employee with this name, email or phone number already exists')]
 class Employee
 {
     #[ORM\Id]
@@ -59,10 +59,10 @@ class Employee
         $this->dateOfEmployment = new DateTimeImmutable();
     }
 
-    #[ORM\PrePersist]
-    public function setSlug(SluggerInterface $slugger): void
+
+    public function computeSlug(SluggerInterface $slugger): void
     {
-        $this->slug = $slugger->slug($this->getFullName());
+        $this->slug = $slugger->slug($this->fullName)->lower();
     }
 
     public function getSlug(): string

@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class ProjectDto
 {
-    ////TODO add groups serialization context
 
     #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
     #[Assert\NotBlank(groups: ['update', 'patch'])]
