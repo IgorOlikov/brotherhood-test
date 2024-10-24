@@ -3,13 +3,16 @@
 namespace App\DTO;
 
 
+use App\DTO\Interface\DtoInterface;
+use App\DTO\Trait\HydratePatchTrait;
 use App\Validator\EntityExists;
 use App\Validator\EntityUniqueField;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class ProjectDto
+final class ProjectDto implements DtoInterface
 {
+    use HydratePatchTrait;
 
     #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
     #[Assert\NotBlank(groups: ['update', 'patch'])]

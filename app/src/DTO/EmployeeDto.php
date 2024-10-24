@@ -2,14 +2,18 @@
 
 namespace App\DTO;
 
+use App\DTO\Interface\DtoInterface;
+use App\DTO\Trait\HydratePatchTrait;
 use App\Validator\EntityExists;
 use App\Validator\EntityUniqueField;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class EmployeeDto
+final class EmployeeDto implements DtoInterface
 {
+    use HydratePatchTrait;
+
     #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
     #[Assert\NotBlank(groups: ['update', 'patch'])]
     #[EntityExists(
@@ -22,7 +26,7 @@ final class EmployeeDto
 
     #[Assert\Type(type: Types::STRING, groups: ['update', 'patch'])]
     #[Assert\Choice(choices: ['working', 'dismissal'], groups: ['update', 'patch'], match: true)]
-    #[Assert\NotBlank(groups: ['update', 'patch'])]
+    #[Assert\NotBlank(groups: ['update'])]
     #[Assert\Length(min: 3, max: 20, groups: ['update', 'patch'])]
     public ?string $status = null;
 

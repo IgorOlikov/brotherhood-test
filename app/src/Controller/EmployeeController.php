@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\EmployeeDto;
+use App\Resolver\PatchRequestPayloadResolver;
 use App\Service\EmployeeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,8 +36,22 @@ class EmployeeController extends AbstractController
         )] EmployeeDto $employeeDto
     )
     {
-        $employee = $this->employeeService->createProjectFromDto($employeeDto);
+        $employee = $this->employeeService->createEmployeeFromDto($employeeDto);
 
         return $this->json(['id' => $employee->getId()], 201);
+    }
+
+    #[Route('/employee/patch', name: 'app_employee_patch', methods: ['PATCH'])]
+    public function patch(
+        #[MapRequestPayload(
+            acceptFormat: 'json',
+            //validationGroups: ['patch'],
+            resolver: PatchRequestPayloadResolver::class
+        )] EmployeeDto $employeeDto
+    )
+    {
+        $employee = $this->employeeService->patchEmployeeFromDto($employeeDto);
+
+        return $this->json($employee);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interface\EntityInterface;
 use App\Repository\EmployeeRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +15,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[UniqueEntity(fields: ['email', 'fullName'], message: 'Employee with this name, email or phone number already exists')]
-class Employee
+class Employee implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

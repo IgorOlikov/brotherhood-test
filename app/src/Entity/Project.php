@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interface\EntityInterface;
 use App\Repository\ProjectRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +15,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Project with this name already exists')]
-class Project
+class Project implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
