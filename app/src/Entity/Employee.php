@@ -21,8 +21,8 @@ class Employee
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $status;
+    #[ORM\Column(type: Types::STRING, nullable: false, options: ['default' => 'working'])]
+    private string $status = 'working';
 
     #[ORM\Column(type: Types::STRING, length: 200)]
     private string $fullName;

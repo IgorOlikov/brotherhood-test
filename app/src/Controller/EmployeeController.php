@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\EmployeeDto;
+use App\Service\EmployeeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -11,6 +12,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api/v1')]
 class EmployeeController extends AbstractController
 {
+    public function __construct(
+        private readonly EmployeeService $employeeService
+    )
+    {
+    }
+
     #[Route('/employee', name: 'app_employee')]
     public function index(): JsonResponse
     {
@@ -28,6 +35,8 @@ class EmployeeController extends AbstractController
         )] EmployeeDto $employeeDto
     )
     {
-        dd($employeeDto);
+        $employee = $this->employeeService->createProjectFromDto($employeeDto);
+
+        return $this->json(['id' => $employee->getId()], 201);
     }
 }
