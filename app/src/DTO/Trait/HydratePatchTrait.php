@@ -14,9 +14,9 @@ trait HydratePatchTrait
         foreach ($values as $key => $value) {
             if (property_exists($dto, $key)) {
 
-                $dateType = (new ReflectionProperty($dto, $key))->gettype();
+                $dtoPropertyType = (new ReflectionProperty($dto, $key))->gettype();
 
-                if($dateType->getName() == DateTimeImmutable::class) {
+                if($dtoPropertyType->getName() == DateTimeImmutable::class) {
                     $dto->$key = new DateTimeImmutable($value);
                 } else {
                     $dto->$key = $value;
