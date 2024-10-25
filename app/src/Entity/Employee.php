@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
@@ -17,35 +18,45 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[UniqueEntity(fields: ['email', 'fullName'], message: 'Employee with this name, email or phone number already exists')]
 class Employee implements EntityInterface
 {
+    #[Groups(groups: ['public'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, nullable: false, options: ['default' => 'working'])]
     private string $status = 'working';
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 200)]
     private string $fullName;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $position;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $slug;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private string $email;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 12, unique: true)]
     private string $phoneNumber;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $dateOfBrith;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $dateOfEmployment;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: ["default" => null])]
     private ?DateTimeImmutable $dateOfDismissal = null;
 

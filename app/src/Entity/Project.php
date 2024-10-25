@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
@@ -17,26 +18,33 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[UniqueEntity(fields: ['name'], message: 'Project with this name already exists')]
 class Project implements EntityInterface
 {
+    #[Groups(groups: ['public'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(name: 'name',length: 200, unique: true)]
     private string $name;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING)]
     private string $client;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 20, options: ['default' => 'opened'])]
     private string $status = 'opened';
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::STRING, length: 255, unique: true)]
     private string $slug;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $openedAt;
 
+    #[Groups(groups: ['public'])]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $closedAt = null;
 
