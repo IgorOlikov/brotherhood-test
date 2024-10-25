@@ -14,8 +14,9 @@ final class EmployeeDto implements DtoInterface
 {
     use HydratePatchTrait;
 
-    #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
+
     #[Assert\NotBlank(groups: ['update', 'patch'])]
+    #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
     #[EntityExists(
         entityClass: 'App\Entity\Employee',
         field: 'id',
@@ -24,14 +25,14 @@ final class EmployeeDto implements DtoInterface
     )]
     public ?int $id = null;
 
+    #[Assert\NotBlank(groups: ['update'])]
     #[Assert\Type(type: Types::STRING, groups: ['update', 'patch'])]
     #[Assert\Choice(choices: ['working', 'dismissal'], groups: ['update', 'patch'], match: true)]
-    #[Assert\NotBlank(groups: ['update'])]
     #[Assert\Length(min: 3, max: 20, groups: ['update', 'patch'])]
     public ?string $status = null;
 
-    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[EntityUniqueField(
         entityClass: 'App\Entity\Employee',
         field: 'fullName',
@@ -41,8 +42,8 @@ final class EmployeeDto implements DtoInterface
     #[Assert\Length(min: 6, max: 30, groups: ['create', 'update'])]
     public ?string $fullName = null;
 
-    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\Choice(
         choices: ['programmer','administrator','devops','designer'],
         groups: ['create', 'update'],
@@ -51,8 +52,8 @@ final class EmployeeDto implements DtoInterface
     #[Assert\Length(min: 4, max: 25, groups: ['create', 'update'])]
     public ?string $position = null;
 
-    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\Email(groups: ['create', 'update'])]
     #[EntityUniqueField(
         entityClass: 'App\Entity\Employee',
@@ -63,14 +64,13 @@ final class EmployeeDto implements DtoInterface
     #[Assert\Length(min: 6, max: 20, groups: ['create', 'update'])]
     public ?string $email = null;
 
-    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
     #[Assert\Length(min: 6, max: 12, groups: ['create', 'update'])]
     public ?string $phoneNumber = null;
 
-    #[Assert\DateTime('Y-m-d')]
-    #[Assert\NotNull(groups: ['create', 'update'])]
     #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\DateTime('Y-m-d')]
     #[Assert\LessThan('today', groups: ['create', 'update'])]
     #[Assert\GreaterThan(value: '1950-01-01', groups: ['create', 'update'])]
     public ?DateTimeImmutable $dateOfBrith = null;

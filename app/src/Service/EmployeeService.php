@@ -13,7 +13,8 @@ class EmployeeService
     use PatchEntityTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly string $entityClass = Employee::class
     )
     {
     }
@@ -36,15 +37,7 @@ class EmployeeService
 
     public function patchEmployeeFromDto(EmployeeDto $employeeDto): EntityInterface
     {
-        $employeeEntity = $this->entityManager->getRepository(Employee::class)->findOneBy(['id' => $employeeDto->id]);
-
-        if (count(get_object_vars($employeeDto)) > 2) {
-            $employeeEntity = $this->patchEntityFromDto($employeeEntity, $employeeDto);
-
-            $this->entityManager->flush();
-        }
-
-        return $employeeEntity;
+        return $this->patchEntityFromDto($this->entityClass, $employeeDto);
     }
 
 }
