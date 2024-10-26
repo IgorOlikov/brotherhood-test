@@ -40,4 +40,9 @@ class EmployeeService
         return $this->patchEntityFromDto($this->entityClass, $employeeDto);
     }
 
+    public function getEmployees(): array
+    {
+        return $this->entityManager->getRepository($this->entityClass)->findAll();
+    }
+
 }

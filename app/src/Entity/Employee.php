@@ -164,7 +164,7 @@ class Employee implements EntityInterface
     }
 
 
-    public function getDateOfDismissal(): DateTimeImmutable
+    public function getDateOfDismissal(): ?DateTimeImmutable
     {
         return $this->dateOfDismissal;
     }

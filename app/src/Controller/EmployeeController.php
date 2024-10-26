@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\DTO\EmployeeDto;
+use App\Entity\Employee;
 use App\Resolver\PatchRequestPayloadResolver;
 use App\Service\EmployeeService;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,13 +25,37 @@ class EmployeeController extends AbstractController
     {
     }
 
-    #[Route('/employee', name: 'app_employee')]
+    #[Route('/employee', name: 'app_employee', methods: ['GET'])]
     public function index(): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/EmployeeController.php',
-        ]);
+        $employees = $this->employeeService->getEmployees();
+
+        return $this->json(
+            ['employees' => $employees],
+            context: [
+                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
+                AbstractNormalizer::GROUPS => ['public'],
+                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
+            ]
+        );
+    }
+
+    #[Route('/employee/{slug}', name: 'app_employee_show', methods: ['GET'])]
+    public function show(
+        #[MapEntity(class: Employee::class, mapping: ['slug' => 'slug'])]
+        Employee $employee
+    ): Response
+    {
+        return $this->json(
+            $employee,
+            context: [
+                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
+                AbstractNormalizer::GROUPS => ['public'],
+                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
+            ]
+        );
     }
 
     #[Route('/employee/create', name: 'app_employee_create', methods: ['POST'])]
@@ -38,11 +64,20 @@ class EmployeeController extends AbstractController
             acceptFormat: 'json',
             validationGroups: ['create']
         )] EmployeeDto $employeeDto
-    )
+    ): Response
     {
         $employee = $this->employeeService->createEmployeeFromDto($employeeDto);
 
-        return $this->json(['id' => $employee->getId()], 201);
+        return $this->json(
+            $employee,
+            201,
+            context: [
+                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
+                AbstractNormalizer::GROUPS => ['public'],
+                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
+            ]
+        );
     }
 
     #[Route('/employee/patch', name: 'app_employee_patch', methods: ['PATCH'])]
@@ -60,7 +95,7 @@ class EmployeeController extends AbstractController
             context: [
                 DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
                 AbstractNormalizer::GROUPS => ['public'],
-                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => true,
+                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
                 AbstractObjectNormalizer::SKIP_NULL_VALUES => false
             ]
         );
