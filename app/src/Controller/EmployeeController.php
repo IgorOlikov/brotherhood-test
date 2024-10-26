@@ -19,6 +19,13 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[Route('/api/v1')]
 class EmployeeController extends AbstractController
 {
+    private array $context = [
+        DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
+        AbstractNormalizer::GROUPS => ['public'],
+        AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false
+    ];
+
     public function __construct(
         private readonly EmployeeService $employeeService
     )
@@ -32,12 +39,7 @@ class EmployeeController extends AbstractController
 
         return $this->json(
             ['employees' => $employees],
-            context: [
-                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
-                AbstractNormalizer::GROUPS => ['public'],
-                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
-            ]
+            context: $this->context
         );
     }
 
@@ -49,12 +51,7 @@ class EmployeeController extends AbstractController
     {
         return $this->json(
             $employee,
-            context: [
-                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
-                AbstractNormalizer::GROUPS => ['public'],
-                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
-            ]
+            context: $this->context
         );
     }
 
@@ -71,12 +68,7 @@ class EmployeeController extends AbstractController
         return $this->json(
             $employee,
             201,
-            context: [
-                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
-                AbstractNormalizer::GROUPS => ['public'],
-                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
-            ]
+            context: $this->context
         );
     }
 
@@ -92,12 +84,7 @@ class EmployeeController extends AbstractController
 
         return $this->json(
             $employee,
-            context: [
-                DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
-                AbstractNormalizer::GROUPS => ['public'],
-                AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
-                AbstractObjectNormalizer::SKIP_NULL_VALUES => false
-            ]
+            context: $this->context
         );
     }
 }
