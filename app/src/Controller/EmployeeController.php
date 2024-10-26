@@ -37,10 +37,7 @@ class EmployeeController extends AbstractController
     {
         $employees = $this->employeeService->getEmployees();
 
-        return $this->json(
-            ['employees' => $employees],
-            context: $this->context
-        );
+        return $this->json(['employees' => $employees], context: $this->context);
     }
 
     #[Route('/employee/{slug}', name: 'app_employee_show', methods: ['GET'])]
@@ -49,42 +46,28 @@ class EmployeeController extends AbstractController
         Employee $employee
     ): Response
     {
-        return $this->json(
-            $employee,
-            context: $this->context
-        );
+        return $this->json($employee, context: $this->context);
     }
 
     #[Route('/employee/create', name: 'app_employee_create', methods: ['POST'])]
     public function create(
-        #[MapRequestPayload(
-            acceptFormat: 'json',
-            validationGroups: ['create']
-        )] EmployeeDto $employeeDto
+        #[MapRequestPayload(acceptFormat: 'json', validationGroups: ['create'])]
+        EmployeeDto $employeeDto
     ): Response
     {
         $employee = $this->employeeService->createEmployeeFromDto($employeeDto);
 
-        return $this->json(
-            $employee,
-            201,
-            context: $this->context
-        );
+        return $this->json($employee, 201, context: $this->context);
     }
 
     #[Route('/employee/patch', name: 'app_employee_patch', methods: ['PATCH'])]
     public function patch(
-        #[MapRequestPayload(
-            acceptFormat: 'json',
-            resolver: PatchRequestPayloadResolver::class
-        )] EmployeeDto $employeeDto
+        #[MapRequestPayload(acceptFormat: 'json', resolver: PatchRequestPayloadResolver::class)]
+        EmployeeDto $employeeDto
     ): Response
     {
         $employee = $this->employeeService->patchEmployeeFromDto($employeeDto);
 
-        return $this->json(
-            $employee,
-            context: $this->context
-        );
+        return $this->json($employee, context: $this->context);
     }
 }
