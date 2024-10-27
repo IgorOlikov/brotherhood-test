@@ -32,7 +32,7 @@ class ProjectController extends AbstractController
     {
     }
 
-    #[Route('/project', name: 'app_project', methods: ['GET'])]
+    #[Route('/project', name: 'app_project_index', methods: ['GET'])]
     public function index(): JsonResponse
     {
         $projects = $this->projectService->getProjects();
@@ -49,8 +49,8 @@ class ProjectController extends AbstractController
         return $this->json($project, context: $this->context);
     }
 
-    #[Route('/project/create', name: 'app_project_create', methods: ['POST'])]
-    public function create(
+    #[Route('/project', name: 'app_project_create', methods: ['POST'])]
+    public function store(
         #[MapRequestPayload(acceptFormat: 'json', validationGroups: ['create'])]
         ProjectDto $projectDto
     ): Response
@@ -60,29 +60,33 @@ class ProjectController extends AbstractController
         return $this->json($project, context: $this->context);
     }
 
-    #[Route('/project/update', name: 'app_employee_update', methods: ['PUT'])]
+    #[Route('/project/{slug}', name: 'app_project_update', methods: ['PUT'])]
     public function update(
         #[MapRequestPayload(acceptFormat: 'json', validationGroups: ['update'])]
-        ProjectDto $projectDto
+        ProjectDto $projectDto,
+        #[MapEntity(class: Project::class, mapping: ['slug' => 'slug'])]
+        Project $project
     ): Response
     {
-        $project = $this->projectService->updateProjectFromDto($projectDto);
+        $project = $this->projectService->updateProjectFromDto($project, $projectDto);
 
         return $this->json($project, context: $this->context);
     }
 
-    #[Route('/project/patch', name: 'app_project_patch', methods: ['PATCH'])]
+    #[Route('/project/{slug}', name: 'app_project_patch', methods: ['PATCH'])]
     public function patch(
         #[MapRequestPayload(acceptFormat: 'json', resolver: PatchRequestPayloadResolver::class)]
-        ProjectDto $projectDto
+        ProjectDto $projectDto,
+        #[MapEntity(class: Project::class, mapping: ['slug' => 'slug'])]
+        Project $project
     ): Response
     {
-        $project = $this->projectService->patchProjectFromDto($projectDto);
+        $project = $this->projectService->patchProjectFromDto($project, $projectDto);
 
         return $this->json($project, context: $this->context);
     }
 
-    #[Route('/project/delete/{slug}', name: 'app_project_delete', methods: ['DELETE'])]
+    #[Route('/project/{slug}', name: 'app_project_delete', methods: ['DELETE'])]
     public function delete(
         #[MapEntity(class: Project::class, mapping: ['slug' => 'slug'])]
         Project $project

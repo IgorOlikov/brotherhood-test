@@ -20,6 +20,11 @@ class ProjectService
     {
     }
 
+    public function getProjects(): array
+    {
+        return $this->entityManager->getRepository($this->targetEntityClass)->findAll();
+    }
+
     public function createProjectFromDto(ProjectDto $projectDto): EntityInterface
     {
         $project = new Project();
@@ -32,15 +37,8 @@ class ProjectService
         return $project;
     }
 
-    public function getProjects(): array
+    public function updateProjectFromDto(Project $project, ProjectDto $projectDto): EntityInterface
     {
-        return $this->entityManager->getRepository($this->targetEntityClass)->findAll();
-    }
-
-    public function updateProjectFromDto(ProjectDto $projectDto): EntityInterface
-    {
-        $project = $this->entityManager->getRepository($this->targetEntityClass)->findOneBy(['id' => $projectDto->id]);
-
         $project = $this->dtoToEntityMapper->map($projectDto, $project);
 
         $this->entityManager->flush();
@@ -48,9 +46,9 @@ class ProjectService
         return $project;
     }
 
-    public function patchProjectFromDto(ProjectDto $projectDto): EntityInterface
+    public function patchProjectFromDto(Project $project, ProjectDto $projectDto): EntityInterface
     {
-        return $this->patchEntityFromDto($this->targetEntityClass , $projectDto);
+        return $this->patchEntityFromDto($project, $projectDto);
     }
 
     public function deleteProject(Project $project): void

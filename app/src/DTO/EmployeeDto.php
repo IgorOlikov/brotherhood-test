@@ -15,15 +15,15 @@ final class EmployeeDto implements DtoInterface
     use HydratePatchTrait;
 
 
-    #[Assert\NotBlank(groups: ['update', 'patch'])]
-    #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
-    #[EntityExists(
-        entityClass: 'App\Entity\Employee',
-        field: 'id',
-        message: 'Employee with ID {{ value }} does not exist.',
-        groups: ['update', 'patch']
-    )]
-    public ?int $id = null;
+    //#[Assert\NotBlank(groups: ['update', 'patch'])]
+    //#[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
+    //#[EntityExists(
+    //    entityClass: 'App\Entity\Employee',
+    //    field: 'id',
+    //    message: 'Employee with ID {{ value }} does not exist.',
+    //    groups: ['update', 'patch']
+    //)]
+    //public ?int $id = null;
 
     #[Assert\NotBlank(groups: ['update'])]
     #[Assert\Type(type: Types::STRING, groups: ['update', 'patch'])]
@@ -70,17 +70,10 @@ final class EmployeeDto implements DtoInterface
     public ?string $phoneNumber = null;
 
     #[Assert\NotBlank(groups: ['create', 'update'])]
-    #[Assert\DateTime('Y-m-d', groups: ['create', 'update', 'patch'])]
+    //#[Assert\DateTime(format: 'Y-m-d')] // ,groups: ['create', 'update', 'patch']
     #[Assert\LessThan('today', groups: ['create', 'update', 'patch'])]
     #[Assert\GreaterThan(value: '1950-01-01', groups: ['create', 'update', 'patch'])]
     public ?DateTimeImmutable $dateOfBrith = null;
-
-    //#[Assert\NotNull(groups: ['create', 'update'])]
-    //#[Assert\Date(groups: ['create', 'update'])]
-    //#[Assert\NotBlank(groups: ['create', 'update'])]
-    //#[Assert\LessThan(value: new DateTimeImmutable(), groups: ['create', 'update'])]
-    //#[Assert\GreaterThan(value: '1950-01-01', groups: ['create', 'update'])]
-    //public ?string $dateOfBrith = null;
 
 
 }
