@@ -60,6 +60,17 @@ class EmployeeController extends AbstractController
         return $this->json($employee, 201, context: $this->context);
     }
 
+    #[Route('/employee/update', name: 'app_employee_update', methods: ['PUT'])]
+    public function update(
+        #[MapRequestPayload(acceptFormat: 'json', validationGroups: ['update'])]
+        EmployeeDto $employeeDto
+    ): Response
+    {
+       $employee = $this->employeeService->updateEmployeeFromDto($employeeDto);
+
+        return $this->json($employee, context: $this->context);
+    }
+
     #[Route('/employee/patch', name: 'app_employee_patch', methods: ['PATCH'])]
     public function patch(
         #[MapRequestPayload(acceptFormat: 'json', resolver: PatchRequestPayloadResolver::class)]
@@ -69,5 +80,16 @@ class EmployeeController extends AbstractController
         $employee = $this->employeeService->patchEmployeeFromDto($employeeDto);
 
         return $this->json($employee, context: $this->context);
+    }
+
+    #[Route('/employee/delete/{slug}', name: 'app_employee_delete', methods: ['DELETE'])]
+    public function delete(
+        #[MapEntity(class: Employee::class, mapping: ['slug' => 'slug'])]
+        Employee $employee
+    ): Response
+    {
+        $this->employeeService->deleteEmployee($employee);
+
+        return $this->json(['status' => 'success']);
     }
 }

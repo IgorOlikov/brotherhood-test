@@ -14,8 +14,8 @@ final class ProjectDto implements DtoInterface
 {
     use HydratePatchTrait;
 
-    #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
     #[Assert\NotBlank(groups: ['update', 'patch'])]
+    #[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
     #[EntityExists(
         entityClass: 'App\Entity\Project',
         field: 'id',
@@ -24,9 +24,9 @@ final class ProjectDto implements DtoInterface
     )]
     public ?int $id = null;
 
-    #[Assert\Type(type: Types::STRING, groups: ['create'])]
-    #[Assert\NotBlank(groups: ['create'])]
-    #[Assert\Length(min: 5, max: 15, groups: ['create'])]
+    #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
+    #[Assert\Length(min: 5, max: 15, groups: ['create', 'update'])]
     #[EntityUniqueField(
         entityClass: 'App\Entity\Project',
         field: 'name',
@@ -35,13 +35,13 @@ final class ProjectDto implements DtoInterface
     )]
     public ?string $name = null;
 
-    #[Assert\Type(type: Types::STRING, groups: ['create'])]
-    #[Assert\NotBlank(groups: ['create'])]
-    #[Assert\Length(min: 5, max: 15, groups: ['create'])]
+    #[Assert\NotBlank(groups: ['create', 'update'])]
+    #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
+    #[Assert\Length(min: 5, max: 15, groups: ['create', 'update'])]
     public ?string $client = null;
 
+    #[Assert\NotBlank(groups: ['update'])]
     #[Assert\Type(type: Types::STRING, groups: ['update', 'patch'])]
-    #[Assert\NotBlank(groups: ['update', 'patch'])]
     #[Assert\Choice(choices: ['opened', 'closed'], groups: ['update', 'patch'], match: true)]
     public ?string $status = null;
 
