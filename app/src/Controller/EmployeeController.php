@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\DTO\EmployeeDto;
 use App\Entity\Employee;
+use App\Entity\Project;
 use App\Resolver\PatchRequestPayloadResolver;
 use App\Service\EmployeeService;
+use App\Service\ProjectService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +29,7 @@ class EmployeeController extends AbstractController
     ];
 
     public function __construct(
-        private readonly EmployeeService $employeeService
+        private readonly EmployeeService $employeeService,
     )
     {
     }
@@ -96,4 +98,34 @@ class EmployeeController extends AbstractController
 
         return $this->json(['status' => 'success']);
     }
+
+    #[Route('/employee/{employeeSlug}/project/{projectSlug}', name: 'app_employee_add_project', methods: ['POST'])]
+    public function addProjectToEmployee(
+       #[MapEntity(class: Employee::class, mapping: ['employeeSlug' => 'slug'])] Employee $employee,
+       #[MapEntity(class: Project::class, mapping: ['projectSlug' => 'slug'])] Project $project
+    ): Response
+    {
+        if(!$this->employeeService->employeeHasProject($employee, $project)) {
+            $this->employeeService->addProjectToEmployee($employee, $project);
+
+            return $this->json(['status' => 'success', 'message' => 'Project successfully added to employee']);
+        }
+        return $this->json(['statues' => 'failed', 'message' => 'Employee already has this project'], 422);
+    }
+
+    #[Route('/employee/{employeeSlug}/project/{projectSlug}', name: 'app_employee_remove_project', methods: ['DELETE'])]
+    public function removeProjectFromEmployee(
+        #[MapEntity(class: Employee::class, mapping: ['employeeSlug' => 'slug'])] Employee $employee,
+        #[MapEntity(class: Project::class, mapping: ['projectSlug' => 'slug'])] Project $project
+    ): Response
+    {
+        if($this->employeeService->employeeHasProject($employee, $project)) {
+            $this->employeeService->removeProjectFromEmployee($employee, $project);
+
+            return $this->json(['status' => 'success', 'message' => 'Project successfully removed from employee']);
+        }
+        return $this->json(['statues' => 'failed', 'message' => 'The employee does not have this project'], 422);
+    }
+
+
 }

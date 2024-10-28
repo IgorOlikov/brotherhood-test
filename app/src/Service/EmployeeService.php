@@ -5,6 +5,8 @@ namespace App\Service;
 use App\DTO\EmployeeDto;
 use App\Entity\Employee;
 use App\Entity\Interface\EntityInterface;
+use App\Entity\Project;
+use App\Repository\EmployeeRepository;
 use App\Service\Trait\PatchEntityTrait;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,15 +16,15 @@ class EmployeeService
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly EmployeeRepository $employeeRepository,
         private readonly DtoToEntityMapper $dtoToEntityMapper,
-        private readonly string $targetEntityClass = Employee::class
     )
     {
     }
 
     public function getEmployees(): array
     {
-        return $this->entityManager->getRepository($this->targetEntityClass)->findAll();
+        return $this->employeeRepository->findAll();
     }
 
     public function createEmployeeFromDto(EmployeeDto $employeeDto): EntityInterface
@@ -57,6 +59,24 @@ class EmployeeService
         $this->entityManager->flush();
     }
 
+    public function employeeHasProject(Employee $employee, Project $project): bool
+    {
+        return $this->employeeRepository->employeeHasProjectById($employee->getId(), $project->getId());
+    }
+
+    public function addProjectToEmployee(Employee $employee, Project $project): void
+    {
+        $employee->addProject($project);
+
+        $this->entityManager->flush();
+    }
+
+    public function removeProjectFromEmployee(Employee $employee, Project $project): void
+    {
+        $employee->removeProject($project);
+
+        $this->entityManager->flush();
+    }
 
 
 }

@@ -130,7 +130,10 @@ class Project implements EntityInterface
         $this->employees->add($employee);
     }
 
+    public function removeEmployee(Employee $employee)
+    {
 
+    }
 
 
 }

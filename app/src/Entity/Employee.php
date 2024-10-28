@@ -174,6 +174,10 @@ class Employee implements EntityInterface
         $this->dateOfDismissal = $dateOfDismissal;
     }
 
+    public function removeProject(Project $project): void
+    {
+        $this->projects->removeElement($project);
+    }
 
 
 }

@@ -5,7 +5,6 @@ namespace App\DTO;
 
 use App\DTO\Interface\DtoInterface;
 use App\DTO\Trait\HydratePatchTrait;
-use App\Validator\EntityExists;
 use App\Validator\EntityUniqueField;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,15 +13,6 @@ final class ProjectDto implements DtoInterface
 {
     use HydratePatchTrait;
 
-    //#[Assert\NotBlank(groups: ['update', 'patch'])]
-    //#[Assert\Type(type: Types::INTEGER, groups: ['update', 'patch'])]
-    //#[EntityExists(
-    //    entityClass: 'App\Entity\Project',
-    //    field: 'id',
-    //    message: 'Project with ID {{ value }} does not exist.',
-    //    groups: ['update', 'patch']
-    //)]
-    //public ?int $id = null;
 
     #[Assert\NotBlank(groups: ['create', 'update'])]
     #[Assert\Type(type: Types::STRING, groups: ['create', 'update'])]
