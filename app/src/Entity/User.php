@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class), ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['name', 'email'], message: 'User with this name or email already exists')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -46,12 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
-    }
-
-    #[ORM\PrePersist]
-    public function setSlug(SluggerInterface $slugger): void
-    {
-        $this->slug = $slugger->slug($this->getName());
     }
 
     public function getEmailVerifiedAt(): ?DateTimeImmutable
@@ -160,5 +154,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function computeSlug(SluggerInterface $slugger): void
+    {
+        $this->slug = $slugger->slug($this->name)->lower();
     }
 }

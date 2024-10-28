@@ -5,6 +5,7 @@ namespace App\Service;
 use App\DTO\ProjectDto;
 use App\Entity\Interface\EntityInterface;
 use App\Entity\Project;
+use App\Repository\ProjectRepository;
 use App\Service\Trait\PatchEntityTrait;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,15 +15,16 @@ class ProjectService
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly DtoToEntityMapper $dtoToEntityMapper,
-        private readonly string $targetEntityClass = Project::class
+        private readonly ProjectRepository $projectRepository,
+        private readonly DtoToEntityMapper $dtoToEntityMapper
+
     )
     {
     }
 
     public function getProjects(): array
     {
-        return $this->entityManager->getRepository($this->targetEntityClass)->findAll();
+        return $this->projectRepository->findAll();
     }
 
     public function createProjectFromDto(ProjectDto $projectDto): EntityInterface
