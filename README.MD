@@ -1,7 +1,7 @@
 @TODO
 1) Добавить JWT авторизацию и аутентификацию.
 2) Добавить Redis кэшерование (Создать кастомный #[MapEntity] resolver: MapEntityRedisValueResolver).
-3) Добавить RabbitMQ для очередей.
+3) Добавить RabbitMQ/systemd worker для очередей.
 4) Добавить Unit-тесты.
 5) Добавить Swagger OpenApi документацию API.
 
@@ -44,7 +44,7 @@ select count(*) as employees_count from employee e;
 
 * средний возраст сотрудников
 
-select sum(e.age) / count(*)  as avg_employees_age from employee e;
+select avg(e.age) as avg_employees_age from employee e;
 
 
 * средний возраст работников на каждом проекте и среднее кол-во работников на каждом проекте
