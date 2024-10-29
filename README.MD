@@ -1,3 +1,10 @@
+@TODO
+1) Добавить JWT авторизацию и аутентификацию.
+2) Добавить Redis кэшерование (Создать кастомный #[MapEntity] resolver: MapEntityRedisValueResolver).
+3) Добавить RabbitMQ для очередей.
+4) Добавить Unit-тесты.
+5) Добавить Swagger OpenApi документацию API.
+
 Заказчик владеет ИТ бизнесом и просит разработать систему управления проектов. Со слов заказчика получены требования:
 IT-компания ведет разработку нескольких проектов. В каждом проекте своя команда разработчиков, но некоторые разработчики могут участвовать в нескольких проектах.
 
@@ -47,7 +54,7 @@ with emp_pro as (
 )
 select
 emp_pro.project_id,
-sum(e.age) / count(e.*) as avg_project_emplpyees_age,
+avg(e.age) as avg_project_emplpyees_age,
 count(e.*) as project_employees_count
 from emp_pro
 JOIN employee e
