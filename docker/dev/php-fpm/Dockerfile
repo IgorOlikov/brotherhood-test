@@ -12,8 +12,11 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql intl
 
 RUN apk add --update linux-headers --no-cache autoconf g++ make \
     && pecl install xdebug \
+    && pecl install redis \
     && rm -rf /tmp/pear \
-    && docker-php-ext-enable xdebug
+    && docker-php-ext-enable xdebug \
+    && docker-php-ext-enable redis
+
 
 
 

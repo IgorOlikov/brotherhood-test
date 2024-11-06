@@ -12,7 +12,6 @@ services:
       depends_on:
         - fpm
 
-
     fpm:
       build:
         context: docker
@@ -25,7 +24,6 @@ services:
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_DB: ${POSTGRES_DB}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-
 
     cli:
       build:
@@ -52,5 +50,12 @@ services:
       ports:
         - "5432:5432"
 
+    redis:
+      image: redis:7.4-alpine
+      volumes:
+        - ./docker/redis/conf:/usr/local/etc/redis/redis.conf
+        - ./docker/redis/data:/root/redis
+      ports:
+        - "6379:6379"
 
 
