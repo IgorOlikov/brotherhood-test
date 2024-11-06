@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\DTO\ProjectDto;
 use App\Entity\Project;
 use App\Resolver\PatchRequestPayloadResolver;
+use App\Resolver\RedisEntityValueResolver;
 use App\Service\ProjectService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,7 +43,7 @@ class ProjectController extends AbstractController
 
     #[Route('/project/{slug}', name: 'app_project_show', methods: ['GET'])]
     public function show(
-        #[MapEntity(class: Project::class, mapping: ['slug' => 'slug'])]
+        #[MapEntity(class: Project::class, mapping: ['slug' => 'slug'], resolver: RedisEntityValueResolver::class)]
         Project $project
     ): Response
     {
