@@ -43,7 +43,9 @@ class EmployeeRepository extends ServiceEntityRepository
 
     public function findOneByFromRedis(array $criteria): ?string
     {
-        $project = $this->redis->get("Employee:slug:{$criteria['slug']}");
+        $colName = array_key_first($criteria) ?? 'slug';
+
+        $project = $this->redis->get("Employee:{$colName}:{$criteria[$colName]}");
 
         if ($project !== false) {
             return $project;
