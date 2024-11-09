@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
+#[ORM\Index(name: 'employee_slug_idx', columns: ['slug'])]
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[UniqueEntity(fields: ['email', 'fullName'], message: 'Employee with this name, email or phone number already exists')]
 class Employee implements EntityInterface

@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
+#[ORM\Index(name: 'project_slug_idx', columns: ['slug'])]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Project with this name already exists')]
 class Project implements EntityInterface
