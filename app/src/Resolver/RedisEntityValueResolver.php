@@ -51,10 +51,13 @@ class RedisEntityValueResolver implements ValueResolverInterface
                 return [];
             }
             try {
-                //$objectFromRedis = $manager->getRepository($options->class)->findOneByFromRedis($criteria);
+                $repository = $manager->getRepository($options->class);
 
+                $object = $repository->findOneByFromRedis($criteria);
 
-                $object = $manager->getRepository($options->class)->findOneBy($criteria);
+                if ($object === null) {
+                    $object = $repository->findOneBy($criteria);
+                }
             } catch (NoResultException|ConversionException) {
                 $object = null;
             }

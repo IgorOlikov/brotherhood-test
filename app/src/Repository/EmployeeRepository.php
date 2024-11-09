@@ -4,18 +4,19 @@ namespace App\Repository;
 
 use App\Entity\Employee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
+use Redis;
 
 /**
  * @extends ServiceEntityRepository<Employee>
  */
 class EmployeeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private Redis $redis
+    )
     {
         parent::__construct($registry, Employee::class);
     }
@@ -38,6 +39,17 @@ class EmployeeRepository extends ServiceEntityRepository
             return true;
         }
         return false;
+    }
+
+    public function findOneByFromRedis(array $criteria): ?string
+    {
+        $project = $this->redis->get("Employee:slug:{$criteria['slug']}");
+
+        if ($project !== false) {
+            return $project;
+        }
+
+        return null;
     }
 
 

@@ -5,20 +5,30 @@ namespace App\Repository;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Redis;
 
 /**
  * @extends ServiceEntityRepository<Project>
  */
 class ProjectRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private readonly Redis $redis,
+    )
     {
         parent::__construct($registry, Project::class);
     }
 
-    public function findOneByFromRedis(array $criteria): array
+    public function findOneByFromRedis(array $criteria): ?string
     {
-        return ['slug' => 'slug'];
+        $project = $this->redis->get("Project:slug:{$criteria['slug']}");
+
+        if ($project !== false) {
+            return $project;
+        }
+
+        return null;
     }
 
 

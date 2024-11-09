@@ -6,8 +6,8 @@ use App\DTO\EmployeeDto;
 use App\Entity\Employee;
 use App\Entity\Project;
 use App\Resolver\PatchRequestPayloadResolver;
+use App\Resolver\RedisEntityValueResolver;
 use App\Service\EmployeeService;
-use App\Service\ProjectService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,11 +44,11 @@ class EmployeeController extends AbstractController
 
     #[Route('/employee/{slug}', name: 'app_employee_show', methods: ['GET'])]
     public function show(
-        #[MapEntity(class: Employee::class, mapping: ['slug' => 'slug'])]
-        Employee $employee
+        #[MapEntity(class: Employee::class, mapping: ['slug' => 'slug'], resolver: RedisEntityValueResolver::class)]
+        Employee|string $employee
     ): Response
     {
-        return $this->json($employee, context: $this->context);
+        return is_string($employee) ? new JsonResponse($employee, json: true) : $this->json($employee, context: $this->context);
     }
 
     #[Route('/employee', name: 'app_employee_store', methods: ['POST'])]
@@ -105,12 +105,9 @@ class EmployeeController extends AbstractController
        #[MapEntity(class: Project::class, mapping: ['projectSlug' => 'slug'])] Project $project
     ): Response
     {
-        if(!$this->employeeService->employeeHasProject($employee, $project)) {
-            $this->employeeService->addProjectToEmployee($employee, $project);
-
-            return $this->json(['status' => 'success', 'message' => 'Project successfully added to employee']);
-        }
-        return $this->json(['statues' => 'failed', 'message' => 'Employee already has this project'], 422);
+        return $this->employeeService->employeeHasProject($employee, $project) ?
+            $this->json(['statues' => 'failed', 'message' => 'Employee already has this project'], 422) :
+            $this->json(['status' => 'success', 'message' => 'Project successfully added to employee']);
     }
 
     #[Route('/employee/{employeeSlug}/project/{projectSlug}', name: 'app_employee_remove_project', methods: ['DELETE'])]
@@ -126,6 +123,5 @@ class EmployeeController extends AbstractController
         }
         return $this->json(['statues' => 'failed', 'message' => 'The employee does not have this project'], 422);
     }
-
 
 }

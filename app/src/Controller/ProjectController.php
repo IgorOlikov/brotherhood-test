@@ -44,10 +44,10 @@ class ProjectController extends AbstractController
     #[Route('/project/{slug}', name: 'app_project_show', methods: ['GET'])]
     public function show(
         #[MapEntity(class: Project::class, mapping: ['slug' => 'slug'], resolver: RedisEntityValueResolver::class)]
-        Project $project
+        Project|string $project
     ): Response
     {
-        return $this->json($project, context: $this->context);
+        return is_string($project) ? new JsonResponse($project, json: true) : $this->json($project, context: $this->context);
     }
 
     #[Route('/project', name: 'app_project_create', methods: ['POST'])]
