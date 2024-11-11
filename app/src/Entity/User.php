@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interface\EntityInterface;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -14,7 +15,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['name', 'email'], message: 'User with this name or email already exists')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
