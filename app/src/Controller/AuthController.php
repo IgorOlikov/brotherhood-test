@@ -25,8 +25,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AuthController extends AbstractController
 {
     public function __construct(
-        private readonly JWTTokenManagerInterface $jwtManager,
-        private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly DtoToEntityMapper $dtoToEntityMapper,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
@@ -55,25 +53,8 @@ class AuthController extends AbstractController
 
         // @TODO rabbitMQ send email
 
-
         return $this->authenticationSuccessHandler->handleAuthenticationSuccess($user);
     }
-
-    #[Route('/token', name: 'app_auth_get_token', methods: ['GET'])]
-    public function jwtTest(): Response
-    {
-        $user = $this->userRepository->find(2);
-        $token = $this->jwtManager->create($user);
-
-        return $this->json(['token' => $token]);
-    }
-
-    #[Route('/protected', methods: ['GET'])]
-    public function jwtProtected(): Response
-    {
-        return new JsonResponse(['success']);
-    }
-
 
 
 }
