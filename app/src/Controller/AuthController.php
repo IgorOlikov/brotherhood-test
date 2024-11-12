@@ -26,7 +26,6 @@ class AuthController extends AbstractController
 {
     public function __construct(
         private readonly JWTTokenManagerInterface $jwtManager,
-        private readonly RefreshTokenGeneratorInterface $refreshTokenGenerator,
         private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly DtoToEntityMapper $dtoToEntityMapper,
@@ -54,22 +53,9 @@ class AuthController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        /**
-        $refreshToken = $this->refreshTokenGenerator->createForUserWithTtl($user, 3600);
+        // @TODO rabbitMQ send email
 
-        $accessToken = $this->jwtManager->create($user);
 
-        $refreshTokenSecureCookie = new Cookie('refresh_token', $refreshToken->getRefreshToken(), time() + 3600);
-
-        //store refresh in database
-        // store user
-
-        //$this->authenticationSuccessHandler->handleAuthenticationSuccess()
-
-        //$response = new JsonResponse(['status' => 'success', 'access_token' => $accessToken]);
-        //$response->headers->setCookie($refreshTokenSecureCookie);
-        //return $response;
-        */
         return $this->authenticationSuccessHandler->handleAuthenticationSuccess($user);
     }
 
