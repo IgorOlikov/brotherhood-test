@@ -105,9 +105,9 @@ class EmployeeController extends AbstractController
        #[MapEntity(class: Project::class, mapping: ['projectSlug' => 'slug'])] Project $project
     ): Response
     {
-        return $this->employeeService->employeeHasProject($employee, $project) ?
-            $this->json(['statues' => 'failed', 'message' => 'Employee already has this project'], 422) :
-            $this->json(['status' => 'success', 'message' => 'Project successfully added to employee']);
+        return $this->employeeService->employeeHasProject($employee, $project)
+            ? $this->json(['statues' => 'failed', 'message' => 'Employee already has this project'], 422)
+            : $this->json(['status' => 'success', 'message' => 'Project successfully added to employee']);
     }
 
     #[Route('/employee/{employeeSlug}/project/{projectSlug}', name: 'app_employee_remove_project', methods: ['DELETE'])]
