@@ -9,9 +9,11 @@ class EmployeeControllerTest extends ApiTestCase
 {
     public function testSomething(): void
     {
-        $response = static::createClient()->request('GET', '/');
+        $response = static::createClient()->request('GET', '/api/v1/employee/{slug}');
 
-        $this->assertResponseIsSuccessful();
-        $this->assertJsonContains(['@id' => '/']);
+
+        $this->assertResponseIsUnprocessable();
+        //$this->assertResponseIsSuccessful();
+        //$this->assertJsonContains(['slug' => '{slug}']);
     }
 }

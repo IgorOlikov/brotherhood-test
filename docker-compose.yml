@@ -39,16 +39,19 @@ services:
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
     postgresql:
-      image: postgres:16-alpine3.18
+      build:
+        context: docker
+        dockerfile: postgresql/Dockerfile
       environment:
         POSTGRES_HOST: ${POSTGRES_HOST}
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_DB: ${POSTGRES_DB}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       volumes:
-        - ./docker/postgresql:/var/lib/postgresql/data
+        - ./docker/postgresql/data:/var/lib/postgresql/data
       ports:
         - "5432:5432"
+
 
     redis:
       image: redis:7.4-alpine
@@ -57,5 +60,6 @@ services:
         - ./docker/redis/data:/root/redis
       ports:
         - "6379:6379"
+
 
 
