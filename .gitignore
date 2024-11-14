@@ -1,5 +1,5 @@
 #.env
 .idea
 .git
-/docker/postgresql
+/docker/postgresql/data
 /docker/dev/nginx/logs/*
