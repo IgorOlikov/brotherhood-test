@@ -52,7 +52,6 @@ services:
       ports:
         - "5432:5432"
 
-
     redis:
       image: redis:7.4-alpine
       volumes:
@@ -60,6 +59,8 @@ services:
         - ./docker/redis/data:/root/redis
       ports:
         - "6379:6379"
+
+    #rabbitmq
 
 
 
