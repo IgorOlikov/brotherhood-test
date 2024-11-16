@@ -32,7 +32,6 @@
       "ext-redis": "*"
     },
     "require-dev": {
-        "api-platform/core": "^4.0",
         "dama/doctrine-test-bundle": "^8.2",
         "doctrine/doctrine-fixtures-bundle": "^3.6",
         "liip/test-fixtures-bundle": "^3.1",
