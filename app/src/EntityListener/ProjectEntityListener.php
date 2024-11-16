@@ -2,6 +2,7 @@
 
 namespace App\EntityListener;
 
+
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
@@ -17,6 +18,7 @@ use Redis;
 #[AsEntityListener(event: Events::prePersist, entity: Project::class)]
 #[AsEntityListener(event: Events::preUpdate, entity: Project::class)]
 #[AsEntityListener(event: Events::postPersist, entity: Project::class)]
+#[AsEntityListener(event: Events::postRemove, entity: Project::class)]
 readonly class ProjectEntityListener
 {
     public function __construct(
@@ -50,5 +52,14 @@ readonly class ProjectEntityListener
                 ]
             )
         );
+    }
+
+    public function postRemove(Project $project, LifecycleEventArgs $eventArgs): void
+    {
+        $slug = $project->getSlug();
+
+        if ($this->redis->exists("Project:slug:{$slug}")) {
+            $this->redis->del("Project:slug:{$slug}");
+        }
     }
 }

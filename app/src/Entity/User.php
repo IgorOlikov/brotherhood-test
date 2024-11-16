@@ -47,6 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->setRoles(['ROLE_USER']);
     }
 
     public function getEmailVerifiedAt(): ?DateTimeImmutable

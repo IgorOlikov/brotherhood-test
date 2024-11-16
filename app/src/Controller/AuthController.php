@@ -46,7 +46,6 @@ class AuthController extends AbstractController
         /** @var PasswordAuthenticatedUserInterface| UserInterface | User $user */
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPassword()));
 
-        $user->setRoles(['ROLE_USER']);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
