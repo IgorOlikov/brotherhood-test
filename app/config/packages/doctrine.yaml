@@ -1,26 +1,23 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-        driver: 'pdo_pgsql'  # Укажите драйвер для вашей базы данных, например, pdo_pgsql для PostgreSQL
-        server_version: '16' # Укажите вашу версию базы данных, например, 13 для PostgreSQL
+        driver: 'pdo_pgsql'
+        server_version: '16'
         charset: UTF8
 
     orm:
         controller_resolver:
             auto_mapping: false
 
-        # Генерация прокси-классов для сущностей (по умолчанию true)
         auto_generate_proxy_classes: true
 
-        # Прокси-классы будут сохранены в папке src/Entity
         proxy_dir: '%kernel.project_dir%/var/doctrine/proxies'
         proxy_namespace: 'DoctrineProxies'
 
 
-
-        # Список сущностей и их маппинг
         entity_managers:
             default:
+                naming_strategy: 'Doctrine\ORM\Mapping\UnderscoreNamingStrategy'
                 mappings:
                     App:
                         is_bundle: false
@@ -29,9 +26,7 @@ doctrine:
                         prefix: 'App\Entity'
                         alias: App
 
-        # lazy_loading для прокси-объектов
         enable_lazy_ghost_objects: true
-
 
 
 when@prod:

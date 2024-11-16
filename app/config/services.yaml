@@ -28,6 +28,11 @@ services:
     #    autowire: true
     #    autoconfigure: true
 
+
+    Doctrine\ORM\Mapping\UnderscoreNamingStrategy:
+        arguments:
+            $case: 0
+
     Redis:
         class: Redis
         calls:

@@ -4,8 +4,6 @@ namespace App\Tests\Functional;
 
 
 use App\DataFixtures\AppFixtures;
-use App\Entity\Project;
-use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -27,27 +25,24 @@ class EmployeeControllerTest extends WebTestCase
 
         $this->client = static::createClient();
 
-        // Теперь можно безопасно получить контейнер и DatabaseTool
         $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
-    public function testSomething(): void
+    public function testEmployeeIndex(): void
     {
-        // Загружаем фикстуры
         $executor = $this->databaseTool->loadFixtures([AppFixtures::class]);
 
-        /** @var Project $project */
-        $project = $executor->getReferenceRepository()->getReference('project', Project::class);
+        ///** @var Project $project */
+        //$project = $executor->getReferenceRepository()->getReference('project', Project::class);
 
 
-        //$client = static::createClient();
-
-        // Отправляем запрос на тестируемый маршрут
         $this->client->request('GET', '/api/v1/project');
 
-        // Проверка ответа
         $this->assertResponseIsSuccessful();
     }
+
+
+
 
     protected function tearDown(): void
     {
