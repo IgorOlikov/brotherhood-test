@@ -4,8 +4,11 @@ namespace App\Tests\Functional;
 
 
 use App\DataFixtures\AppFixtures;
+use App\Entity\Project;
+use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
@@ -13,32 +16,37 @@ class EmployeeControllerTest extends WebTestCase
 {
 
     /** @var AbstractDatabaseTool */
-    protected AbstractDatabaseTool $databaseTool;
+    private AbstractDatabaseTool $databaseTool;
 
-    public function setUp(): void
+    /** @var KernelBrowser */
+    private KernelBrowser $client;
+
+    protected function setUp(): void
     {
-        //self::bootKernel();
-
         parent::setUp();
 
-        $this->databaseTool = static::getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->client = static::createClient();
+
+        // Теперь можно безопасно получить контейнер и DatabaseTool
+        $this->databaseTool = self::getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
     public function testSomething(): void
     {
+        // Загружаем фикстуры
+        $executor = $this->databaseTool->loadFixtures([AppFixtures::class]);
 
-        $clinet = static::createClient();
-
-        $this->databaseTool->loadFixteures([AppFixtures::class]);
-
-
-        $response = $clinet->request('GET', '/api/v1/employee/{slug}');
+        /** @var Project $project */
+        $project = $executor->getReferenceRepository()->getReference('project', Project::class);
 
 
-        $this->assertResponseIsUnprocessable();
-        //$this->assertResponseIsSuccessful();
-        //$this->assertJsonContains(['slug' => '{slug}']);
-        //->jso
+        //$client = static::createClient();
+
+        // Отправляем запрос на тестируемый маршрут
+        $this->client->request('GET', '/api/v1/project');
+
+        // Проверка ответа
+        $this->assertResponseIsSuccessful();
     }
 
     protected function tearDown(): void

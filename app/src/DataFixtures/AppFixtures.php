@@ -26,6 +26,8 @@ class AppFixtures extends Fixture implements FixtureInterface
 
          $manager->persist($project);
 
-        $manager->flush();
+         $manager->flush();
+
+         $this->addReference('project', $project);
     }
 }

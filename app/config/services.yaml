@@ -24,9 +24,9 @@ services:
     # please note that last definitions always *replace* previous ones
 
 
-    Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator:
-        autowire: true
-        autoconfigure: true
+    #Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator:
+    #    autowire: true
+    #    autoconfigure: true
 
     Redis:
         class: Redis
