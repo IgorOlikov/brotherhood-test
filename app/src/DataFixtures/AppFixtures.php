@@ -10,24 +10,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture implements FixtureInterface
 {
-    public function __construct(
-        private readonly UserPasswordHasherInterface $passwordHasher
-    )
-    {
-
-    }
 
     public function load(ObjectManager $manager): void
     {
-         $project = new Project();
 
-         $project->setName('nametest');
-         $project->setClient('clienttest');
-
-         $manager->persist($project);
-
-         $manager->flush();
-
-         $this->addReference('project', $project);
     }
 }

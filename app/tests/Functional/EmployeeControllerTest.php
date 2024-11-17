@@ -41,6 +41,36 @@ class EmployeeControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
+    public function testEmployeeShow()
+    {
+
+    }
+
+    public function testEmployeeStore()
+    {
+
+    }
+
+    public function testEmployeeUpdate()
+    {
+
+    }
+
+    public function testEmployeePatch()
+    {
+
+    }
+    public function testEmployeeDelete()
+    {
+
+    }
+
+    public function testEmployeeAddProject()
+    {
+
+    }
+
+
 
 
 
