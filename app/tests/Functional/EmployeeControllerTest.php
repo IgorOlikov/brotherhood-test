@@ -33,14 +33,12 @@ class EmployeeControllerTest extends WebTestCase
     /** @var SerializerInterface */
     private SerializerInterface $serializer;
 
-
     private array $serializerContext = [
         DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
         AbstractNormalizer::GROUPS => ['public'],
         AbstractObjectNormalizer::SKIP_UNINITIALIZED_VALUES => false,
         AbstractObjectNormalizer::SKIP_NULL_VALUES => false
     ];
-
 
     protected function setUp(): void
     {
@@ -53,8 +51,6 @@ class EmployeeControllerTest extends WebTestCase
         $this->executor = $this->databaseTool->loadFixtures([FunctionalEmployeeControllerTestFixtures::class]);
 
         $this->serializer = self::getContainer()->get(SerializerInterface::class);
-
-        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
     public function testEmployeeIndex(): void
@@ -276,10 +272,6 @@ class EmployeeControllerTest extends WebTestCase
             $responseDecoded
         );
     }
-
-
-
-
 
     protected function tearDown(): void
     {
