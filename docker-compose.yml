@@ -60,7 +60,11 @@ services:
       ports:
         - "6379:6379"
 
+    #todo
     #rabbitmq
+    #worker container
+    #mailer
+
 
 
 
