@@ -49,7 +49,7 @@ final class EmployeeDto implements DtoInterface
         message: 'Employee with {{ field }} {{ value }} already exists.',
         groups: ['create', 'update', 'patch']
     )]
-    #[Assert\Length(min: 6, max: 20, groups: ['create', 'update', 'patch'])]
+    #[Assert\Length(min: 6, max: 30, groups: ['create', 'update', 'patch'])]
     public ?string $email = null;
 
     #[Assert\NotBlank(groups: ['create', 'update'])]

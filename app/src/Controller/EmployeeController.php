@@ -96,7 +96,7 @@ class EmployeeController extends AbstractController
     {
         $this->employeeService->deleteEmployee($employee);
 
-        return $this->json(['status' => 'success']);
+        return $this->json(['status' => 'success', 'message' => 'Employee successfully created']);
     }
 
     #[Route('/employee/{employeeSlug}/project/{projectSlug}', name: 'app_employee_add_project', methods: ['POST'])]
